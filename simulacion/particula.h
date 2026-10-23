@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <random>
+#include <vector>
 
 class Particula{
     private: // atributos privados
