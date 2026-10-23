@@ -44,13 +44,24 @@ void Sistema::setRepeticiones(int n_rep) {
     n = n_rep;
 }
 
+const vector<double>& Sistema::getDistanciasMaximas() const {
+    return distanciaMax;
+}
+
+const vector<double>& Sistema::getTiemposCaminataUs() const {
+    return tiempoCaminataUs;
+}
+
 void Sistema::correrExperimento() {
     distanciaMax.clear();
     distanciaMax.reserve(n);
+    tiempoCaminataUs.clear();
+    tiempoCaminataUs.reserve(n);
     mt19937 genParticula(generador());
     Particula particula(dimensiones, genParticula);
 
     for (int i = 0; i < n; i++) {
+        const auto inicio = chrono::steady_clock::now();
         particula.regresarPosicionInicial();
         double maxima = 0.0;
 
@@ -61,7 +72,11 @@ void Sistema::correrExperimento() {
                 maxima = distancia;
             }
         }
+        const auto fin = chrono::steady_clock::now();
         distanciaMax.push_back(maxima);
+        tiempoCaminataUs.push_back(
+            chrono::duration<double, micro>(fin - inicio).count()
+        );
     }
 }
 
@@ -87,14 +102,19 @@ void Sistema::imprimirResultados(double tiempo) {
     cout << "Tiempo de ejecucion:          " << tiempo << " s" << endl;
 
     ofstream archivo("distancias_maximas.csv");
+    if (!archivo) {
+        cerr << "No se pudo crear distancias_maximas.csv" << endl;
+        return;
+    }
     archivo << "# dimensiones = " << dimensiones
             << ", pasos = " << numPasos
             << ", repeticiones = " << n
             << ", tiempo_s = " << tiempo << endl;
 
-    archivo << "caminata,distancia_maxima" << endl;
+    archivo << "caminata,distancia_maxima,tiempo_us" << endl;
     for (size_t i = 0; i < distanciaMax.size(); i++) {
-        archivo << (i + 1) << "," << distanciaMax[i] << endl;
+        archivo << (i + 1) << "," << distanciaMax[i] << ","
+                << tiempoCaminataUs[i] << endl;
     }
     archivo.close();
     cout << "Distancias maximas guardadas en distancias_maximas.csv" << endl;

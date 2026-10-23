@@ -1,11 +1,10 @@
 #ifndef SISTEMA_H
 #define SISTEMA_H
 #include <iostream>
-
-#include "particula.h"
+#include <random>
 #include <vector>
 
-using namespace std;
+#include "particula.h"
 
 
 class Sistema {
@@ -13,8 +12,9 @@ class Sistema {
         int dimensiones;
         int n; //cantidad de repeticiones del experimento
         int numPasos; //cantidad de pasos que da la particula
-        mt19937 generador; // generador de numeros aleatorios
-        vector<double> distanciaMax;
+        std::mt19937 generador; // generador de numeros aleatorios
+        std::vector<double> distanciaMax;
+        std::vector<double> tiempoCaminataUs;
 
     public:
         Sistema(int dimensiones, int n, int numPasos);
@@ -29,8 +29,8 @@ class Sistema {
         void setNumPasos(int pasos);
         void setRepeticiones(int n_rep);
 
-
-
+        const std::vector<double>& getDistanciasMaximas() const;
+        const std::vector<double>& getTiemposCaminataUs() const;
 };
 
 #endif

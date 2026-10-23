@@ -7,7 +7,7 @@
 
 class Particula{
     private: // atributos privados
-        vector<int> coordenadas;
+        std::vector<int> coordenadas;
         int dimension;
         std::mt19937 generador;
 
@@ -19,7 +19,7 @@ class Particula{
         void regresarPosicionInicial();
 
         // getters para posiciones
-        vector<int> getPosicion() const;
+        std::vector<int> getPosicion() const;
 
 };
 
