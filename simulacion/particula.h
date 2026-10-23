@@ -18,8 +18,7 @@ class Particula{
         void regresarPosicionInicial();
 
         // getters para posiciones
-        int getX() const;
-        int getY() const;
+        vector<int> getPosicion() const;
 
 };
 
