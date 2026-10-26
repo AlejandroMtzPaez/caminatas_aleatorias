@@ -376,6 +376,16 @@ class InterfazCaminata:
         )
         self.tiempo.grid(row=7, column=0, sticky="ew", pady=(12, 0))
 
+        self.promedio_individual = tk.Label(
+            panel,
+            text="Promedio de distancia máxima: —",
+            bg=COLOR_SUPERFICIE,
+            fg=COLOR_TEXTO,
+            font=(FUENTE, 10, "bold"),
+            anchor="w",
+        )
+        self.promedio_individual.grid(row=8, column=0, sticky="ew", pady=(6, 0))
+
     def _validar_parametros(self):
         if self._en_ejecucion:
             return
@@ -513,6 +523,10 @@ class InterfazCaminata:
         self._datos_grafica = [distancia for _, distancia, _ in registros]
         self._dibujar_grafica()
         self.tiempo.configure(text=f"Tiempo total de ejecución: {tiempo:.6f} s")
+        promedio = math.fsum(self._datos_grafica) / len(self._datos_grafica)
+        self.promedio_individual.configure(
+            text=f"Promedio de distancia máxima: {promedio:.4f}"
+        )
         self._mostrar_estado(f"Simulación completada. CSV: {ruta_csv}")
 
     def _validar_parametros_multiples(self):
@@ -789,6 +803,7 @@ class InterfazCaminata:
             font=(FUENTE, 9),
         )
         self.tiempo.configure(text="Tiempo total de ejecución: —")
+        self.promedio_individual.configure(text="Promedio de distancia máxima: —")
 
     def _dibujar_grafica(self, _evento=None):
         if not self._datos_grafica:
